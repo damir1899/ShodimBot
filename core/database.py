@@ -1,5 +1,6 @@
 import psycopg2
 from core.config import *
+from random import randint
 
 
 def PGconnection():
@@ -63,3 +64,30 @@ def add_information_places(category, title, information, url, photo):
             )
         else:
             pass
+        
+
+def get_location():
+    with PGconnection().cursor() as cursor:
+        data = []
+        for i in range(1, 6):
+            cursor.execute(f"SELECT title FROM places WHERE id = {randint(1, 298)}")
+            one_location = cursor.fetchone()
+            data.append(one_location)
+    
+    return data
+
+
+def get_category_location(category):
+    with PGconnection().cursor() as cursor:
+        cursor.execute(f"SELECT * FROM places WHERE category = '{category}'")
+        all_location = cursor.fetchall()
+    return all_location
+
+
+def get_name_location(title):
+    with PGconnection().cursor() as cursor:
+        cursor.execute(f"SELECT * FROM places WHERE title = '{title}'")
+        info_location = cursor.fetchone()
+    return info_location
+    
+    
